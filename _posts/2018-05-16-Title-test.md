@@ -6,7 +6,7 @@ categories:
 tags:
 ---
 
-## mac에서 rbenv를 사용해 Jekyll블로그를 생성하고, 이를 GitHub에 배포하기.
+# mac에서 rbenv를 사용해 Jekyll블로그를 생성하고, 이를 GitHub에 배포하기.
 
 ## Jekyll
 Jekyll : 일반적으로 블로그를 만들기 위해 사용하는 사이트 생성기이다. 포스트 형태를 `HTML` 이 아닌 마크업을 사용할 수 있으며, 데이터 베이스를 쓰지 않는다는 점은 버전관리 시스템을 사용해서 작성한 글 들을 편리하게 관리할 수 있다는 장점을 준다.
@@ -100,3 +100,24 @@ bundle update
 bundle exec jekyll serve
 ```
 <http://127.0.0.1:4000>으로 접속하면 아래와 같은 페이지를 확인할 수 있다.
+
+<img src ="{{ site.url }}/assets/images/blog-jekyll-main.png" alt="블로그 메인">
+
+## 글 작성
+`jekll`의 글은 기본적으로 `markdown`을 사용하며. `_posts`폴더 내부에서 `yyyy-mm-dd-title.markdown`형식을 가진 파일 하나당 하나의 글이 된다.
+
+기본적으로 글이 하나 존재하니 그 글을 보고 새로운 글을 작성해 본다. 자세한 내용은 아래의 링크를 참조하면 된다.<br>
+[jekyll 공식 사이트](https://jekyllrb-ko.github.io)
+
+## GitHub에 배포하기
+로컬에서 `jekill serve`명령어 또는 `bundle exec jekll serve`를 사용하면 `_sites`폴더가 생성되며, 해당 폴더의 내용들이 결과물이 된다. `github`에 블로그를 올릴때는 결과물이 아닌 `jekyll`소스를 사용해야 한ㄷ.
+
+### 저장소 생성
+`github-pages`를 이용해 `jekll`블로그를 만들 떄는, `자신의 유저명.github.io`라는 이름의 저장소를 만들면 된다.
+
+<img src ="{{ site.url }}/assets/images/blog-jekyll-newrepository.png" alt="새로운 저장소 생성">
+
+저는 이미 블로그 주소가 있기 때문에 사용할 수 없다고 뜨지만, 블로그를 처음 만드시는 분들은 정상적으로 작동할 것 입니다. <br>
+* 블로그 주소는 한계정에 한개만 생성할 수 있습니다.
+
+<img src ="{{ site.url }}/assets/images/blog-jekyll-name.png" alt="저장소 주소">
