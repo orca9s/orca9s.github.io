@@ -1,5 +1,5 @@
 ---
-title: mac os에 Python 설치.
+title: mac os에 Python 설치
 description: <center> mac os에 Python설치하기 </center>
 categories:
  - Python

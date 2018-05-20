@@ -1,5 +1,5 @@
 ---
-title: Python 복습하기.
+title: Python 복습하기
 description: <center> 학원에서 배운 파이썬 복습하기. </center>
 categories:
  - Python
