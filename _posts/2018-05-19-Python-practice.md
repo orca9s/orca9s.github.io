@@ -6,7 +6,7 @@ categories:
 tags:
 ---
 
-## 파이썬 실행해보기
+# 파이썬 실행해보기
 파이썬 설치를 마쳤다면 이제 실행해 보아야 한다. 우선 표현식에 대해 알아보자.
 ## 표현식
 <br> 표현식이란 값을 의미하는 표현 또는 값을 반환하는 표현을 뜻 한다.
@@ -14,10 +14,10 @@ tags:
 >>> sec = 60
 >>> 2 * 3 = 6
 ```
-### 구문
+## 구문
 구문은 값의 의미를 지니지 않으며, 어떠한 목적을 수행하는 코드를 뜻 한다.
 <img src ="{{ site.url }}/assets/images/blog-python-statement.png" alt="구문 실습" width="400px" height="200px">
-### 변수
+# 변수
 파이썬은 모든것이 객체로 이루어져 있다. 객체는 데이터의 형태를 결정해주는 타입으로, 파이썬에서는 객체의 타입을 바꿀 수 없다. 프로그래머는 변수를 선언하고 사용하는 형태로 컴퓨터의 메모리에 값을 할당시키고 참조할 수 있다.<br> 파이썬 에서는 값을 할당할때 `=`기호를 사용하여 할당한다.
 ```c
 프로그래밍 언어에서 =은 같다는 의미가 아니라 ==이 같다는 의미이다.
@@ -70,7 +70,7 @@ break, except, in, raise
 ```c
 >>> print(var)
 ```
-## 수학 연산자
+# 수학 연산자
 ```c
 + 더하기
 - 뺴기
@@ -122,7 +122,7 @@ a에 100을 할당하고, 3을 뺸 결과를 다시 a에 할당하기
 내장함수 int, float를 사용
 <img src ="{{ site.url }}/assets/images/blog-python-int-float.png" alt="형변환 실습" width="300px" height="200px">
 
-## 문자열
+# 문자열
 ```c
 파이썬3에서는 문자열에서 기본적으로 유니코드(Unicode)를 사용하며, 불변(immutable)하다.
 ```
@@ -142,3 +142,50 @@ a에 100을 할당하고, 3을 뺸 결과를 다시 a에 할당하기
 ```
 세 개의 작은 따옴표 또는 큰 따옴표는 여러줄에 걸친 문자열을 나타낼 때 사용한다.
 <img src ="{{ site.url }}/assets/images/blog-python-multieline.png" alt="멀티라인 실습" width="300px" height="200px">
+## 문자열 더하기
+문자열을 합칠때 사용한다.
+<img src ="{{ site.url }}/assets/images/blog-python-textadd.png" alt="문자열 더하기 실습" width="300px" height="200px">
+
+## 문자열 형변환
+```c
+>>> str(147)
+'147'
+```
+문자열을 제외한 객체를 print함수로 호출하면, 내부적으로 `str`함수를 사용한 결과를 나타내준다.
+
+|   이스케이프 문자   |      설명     |
+|:———————:|:——————:|
+| /a |  비프음 발생  |
+| \t |    탭(tab)  |
+| \n | 줄바꿈   |
+| \\ | \(역슬래시) 입력 |  
+| \' | 작은따옴표(') 입력 |  
+| \" | 큰따옴표(") 입력  |
+
+## 인덱스 연산
+문자열에서 문자를 추출하기 위해 대괄호와 오프셋을 지정할 수 있다. 가장 왼쪽은 0이며, 가장 오른쪽은 -1로 시작한다.
+
+<img src ="{{ site.url }}/assets/images/blog-python-text-index.png" alt="인덱스 연산 실습" width="400px" height="400px">
+문자열은 불변이므로 인덱싱한 부분에 새 값을 대입할 수 없다.
+```python
+>>> lux[0] = '별'
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: 'str' object does not support item assignment
+```
+
+## 슬라이스 연산
+```c
+[start:end:step] 형식을 사용한다.
+
+[:]
+처음부터 끝까지
+[start:]
+start오프셋부터 마지막까지
+[:end]
+처음부터 end오프셋까지
+[start:end]
+start오프셋부터 end오프셋까지
+[start:end:step]
+start오프셋부터 end오프셋까지, step만큼씩 뛰어넘은 부분
+```
