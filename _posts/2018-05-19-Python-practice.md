@@ -154,7 +154,7 @@ a에 100을 할당하고, 3을 뺸 결과를 다시 a에 할당하기
 문자열을 제외한 객체를 print함수로 호출하면, 내부적으로 `str`함수를 사용한 결과를 나타내준다.
 
 |   이스케이프 문자   |      설명     |
-|:———————:|:——————:|
+|:-------:|:-------:|
 | /a |  비프음 발생  |
 | \t |    탭(tab)  |
 | \n | 줄바꿈   |
@@ -188,4 +188,151 @@ start오프셋부터 마지막까지
 start오프셋부터 end오프셋까지
 [start:end:step]
 start오프셋부터 end오프셋까지, step만큼씩 뛰어넘은 부분
+```
+## 길이
+내장함수 len을 사용하면 된다.
+
+## 문자열 나누기
+문자열의 내장함수 split을 사용해야한다. spilt함수에 인자로 주어진 구분자를 기준으로 하나의 문자열을 리스트 형태로 반환해준다.
+
+```python
+>>>girlsday = '민아, 유라, 소진, 혜리'
+>>>girlsday.split(',')
+['민아', '유라', '소진', '혜리']
+```
+split함수에 인자를 주지 않을 경우, 공백문자를 구분자로 사용한다.
+
+## 문자열 결합
+split 함수와 반대의 역할을 한다.
+문자열 리스트를 하나의 문자열로 결합해주며, 각 문자열을 결합해줄 구분자 문자열을 지정한 후 join함수를 사용해준다.
+
+```python
+>>> girlsday_list = girlsday.split(',')
+>>> girlsday_str = ','.join(girlsday_list)
+>>> print(girlsday_str)
+민아, 유라, 소진, 혜리
+```
+
+## 대소문자 다루기
+
+```python
+>>> lux = 'lux, the lady of Luminosity'
+>>> lux.capitalize()
+'lux, the lady luminosity'
+>>> lux.title()
+'lux, The Lady of Luminosity'
+>>> lux.upper()
+'LUX, THE LADU OF LUMINOSITY'
+>>> lux.lower()
+'lux, the lady of luminosity'
+>>> lux.swapcase()
+'LUX, THE LADY OF LUMINOSITY'
+```
+
+## 문자열 포맷
+옛 스타일(%)
+```python
+string % data
+```
+
+|   변환타입   |      설명     |
+|:---:|:---:|
+| %s |  문자열  |
+| %d |  10진수  |
+| %x |  16진수  |
+| %o |  8진수  |
+| %f |  10진 부동소수점수  |
+| %e | 지수로 나타낸 부동소수점수 |  
+| %g | 10진 부동소수점수 혹은 지수로 나타낸 부동소수점수 |  
+| %% | 리터럴%  |
+
+```python
+>>> '%s' % 42
+'42'
+>>> '%d x %d : %d' % (3, 4, 12)
+'3 x 4 : 12'
+```
+
+## 정렬
+```c
+%[정렬기준(-,없음)][전체글자수].[문자길이 또는 소수점 이후 문자길이][변환타입]
+```
+
+```python
+>>> d = 37
+>>> f = 3.14
+>>> s = 'Fastcampus'
+>>> '%d %f %s' % (d, f, s)
+'37 3.140000 Fastcampus'
+>>> '%10d %10f %10s' % (d, f, s)
+'        37   3.140000 Fastcampus'
+>>> '%14d %14f %14s' % (d, f, s)
+'            37       3.140000     Fastcampus'
+>>> '%-14d %-14f %-14s' % (d, f, s)
+'37             3.140000       Fastcampus    '
+>>> '%-14.3d %-14.3f %-14.3s' % (d, f, s)
+'037            3.140          Fas           '
+```
+
+## 새 스타일 ({}, format)
+```c
+{}.format(변수)
+```
+```python
+# 기본형태
+>>> '{} {} {}'.format(d, f, s)
+'37 3.14 Fastcampus'
+
+# 각 인자의 순서를 지정
+>>> '{1} {2} {0}'.format(d, f, s)
+'3.14 Fastcampus 37'
+
+# 각 인자에 이름을 지정
+>>> '{d} {f} {s}'.format(d=50, f=1.432, s='WPS')
+'50 1.432 WPS'
+
+# 딕셔너리로부터 변수 할당
+>>> dict = {'d': d, 'f': f, 's': s}
+>>> '{0[d]} {0[f]} {0[s]} {1}'.format(dict, 'WPS')
+'37 3.14 Fastcampus WPS'
+
+# 타입 지정자 입력
+>>> '{:d} {:f} {:s}'.format(d, f, s)
+'37 3.140000 Fastcampus'
+
+# 이름과 타입지정자를 모두 사용
+>>> '{digit:d} {float:f} {string:s}'.format(digit=700, float=1.4323, string='Welcome')
+'700 1.432300 Welcome'
+
+# 필드길이 10, 우측정렬
+>>> '{:10d}'.format(d)
+'        37'
+>>> '{:>10d}'.format(d)
+'        37'
+
+# 필드길이 10, 좌측정렬
+>>> '{:<10d}'.format(d)
+'37        '
+
+# 필드길이 10, 가운데 정렬
+>>> '{:^10d}'.format(d)
+'    37    '
+
+# 필드길이 10, 가운데 정렬, 빈 공간은 ~로 채움
+>>> '{:~^10d}'.format(d)
+'~~~~37~~~~'
+```
+## `f`표현법
+```python
+# 기본 형태
+apple = '사과'
+banana = '바나나'
+train = '기차'
+
+f'{apple}는 맛있어 맛있으면 {banana} {banana}는 길어 길면 {train}'
+
+# 옵션 지정
+f'''{apple:^10}
+{banana:^10}
+{train:^10}'''
 ```
