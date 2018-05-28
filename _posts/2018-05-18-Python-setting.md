@@ -12,7 +12,7 @@ tags:
 brew install pyenv
 brew install pyenv-virtulenv
 ```
-## pyenv 설청하기
+## pyenv 설정하기
 pyenv 설치를 완료했다면 shell을 설정에 추가 해주어야한다. vi ~/.zshrc를 이용해서 편집창에 들어가도록한다. <br>다음 아래의 코드를 추가해 준다.
 
 ```c
@@ -60,7 +60,7 @@ pyenv local name
 iPython은 기본 파이썬 셸보다 다양한 기능을 제공해 준다.
 
 ```c
-pip install iptython
+pip install ipython
 ```
 설치를 완료한 후 터미널 창에서 ipython을 실행해주면 된다.
 <br>이것으로 mac에서 파이썬을 사용할 준비가 끝났다.
