@@ -205,3 +205,39 @@ change_global_champion()
 print('print global champion : {}'.format(champion))
 ```
 파이썬에서든 한 스코프에서 동일한 이름을 가진 두 스코프의 변수를 사용할 수 없음을 기억해야 한다.
+
+## 내부함수에서의 로컬 스코프(nonlocal)
+```python
+champion = 'Lux'
+
+def local1():
+    champion = 'Ahri'
+    print('local1 locals() : {}'.format(locals()))
+
+    def local2():
+        champion = 'Ezreal'
+        print('local2 locals() : {}'.format(locals()))
+    local2()
+
+print('global locals() : {}'.format(locals()))
+local1()
+```
+로컬 스코프 내부에는 또 다른 로컬 스코프가 존재할 수 있다.<br>
+전역 스코프가 아닌, 자신의 바로 바깥 영역의 로컬 스코프(자신보다 한 단계 위의 로컬 스코프)의 데이터를 참조하고자 한다면, `nonlocal`키워드를 사용한다.
+```python
+champion = 'Lux'
+
+def local1():
+    champion = 'Ahri'
+    print('local1 locals() : {}'.format(locals()))
+
+    def local2():
+        nonlocal champion
+        champion = 'Ezreal'
+        print('local2 locals() : {}'.format(locals()))
+    local2()
+    print('local1 locals() : {}'.format(locals()))
+
+print('global locals() : {}'.format(locals()))
+local1()
+```
