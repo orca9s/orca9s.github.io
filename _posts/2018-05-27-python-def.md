@@ -79,7 +79,7 @@ def func(매개변수1, 매개변수2):
 위치인자와 키워드인자를 동시에 쓴다면, 위치인자가 먼저 와야 한다.
 
 ## 기본 매개변수값의 정의 시점
->>> 기본 매개변수값은 함수가 실행될 때 마다 계산되지 않고, 함수가 정의되는 시점에 계산되어 사용된다.
+> 기본 매개변수값은 함수가 실행될 때 마다 계산되지 않고, 함수가 정의되는 시점에 계산되어 사용된다.
 
 ```python
 >>> def return_list(value, result=[]):
@@ -241,3 +241,185 @@ def local1():
 print('global locals() : {}'.format(locals()))
 local1()
 ```
+
+# global키워드와 인자(argument)전달의 차이
+
+인자로 전달한 경우
+```python
+global_level = 100
+def level_add(value):
+  print(value)
+
+
+level_add(global_level)
+print(global_level)
+```
+## global키워드를 사용한 경우
+```python
+global_level = 100
+def level_add():
+  global global_level
+  global_level += 30
+  print(global_level)
+
+level_add()
+print(global_level)
+```
+인자로 전달한 경우, 같은 객체를 가리키는 글로벌 변수`global_level`과 매개변수`value`가 존재한다. 이 때, 매개변수인 `value`의 값을 변경하는 것은 `global_level`에는 영향을 주지 않는다.
+<br>
+global키워드의 경우 둘은 같은 변수이다. <br>
+
+# 람다함수
+한 줄 짜리 표현식으로 이루어지며, 반복문이나 조건문 등의 제어문은 포함될 수 없다.<br>
+또한, 함수이지만 정의/호출이 나누어져 있지 않으며 표현식 자체가 바로 호출된다.
+```python
+lambda <매개변수> : <표현식>
+```
+
+```python
+# 함수의 정의
+>>> def multi(x):
+...   return x*x
+...
+
+# 함수의 호출
+>>> multi(5)
+25
+
+# 람다함수의 사용
+>>> (lambda x : x*x)(5)
+25
+
+# 람다함수를 사용해 함수 정의
+>>> f = lambda x : x*x
+>>> f(5)
+25
+```
+## 람다함수의 사용
+```python
+import string
+>>> for char in string.ascii_lowercase:
+...   if char > 'i':
+...     print(char.upper())
+...   else:
+...     print(char)
+```
+
+```python
+>>>for char in string.ascii_lowercase:
+...   print((lambda x : x.upper() in x > 'i' else x)(char))
+```
+
+# 클로져 (Closure)
+함수가 정의된 환경을 말하며, 파이썬 파일이 여러개일 경우 각 파일은 하나의 `모듈`역할을 하고, 각 `모듈`은 독립적인 환경을 가진다. 독립된 환경은 각자의 영역을 전역 영역으로 사용한다.
+## closuer/module_a.py
+```python
+level = 100
+def print_level():
+  print(level)
+```
+## closuer/module_b.py
+```python
+import module_a
+level = 50
+def print_level():
+  print(level)
+```
+`python module_b.py`로`module_b`를 실행한다.<br>
+함수의 전역 영역은 해당 함수가 정의된 모듈의 전역 영역으로, 전역변수는 모듈의 영역에 영향을 받는다.
+
+## 내부함수의 클로져
+```python
+>>> level = 0
+>>> def outer():
+...   level = 50
+...   def inner():
+...     nonlocal level
+...     level += 3
+...     print(level)
+...   return inner
+...
+>>> f = outer()
+```
+위의 경우, `outer`함수는 `inner`함수를 반환하여 결과를`f`전역변수에 할당한다.
+`inner`함수의 호출 결과가 아닌 함수 자체를 반환하기 때문에, `f`변수는 실행할 수 있는 함수객체이다. 이 때 `inner`함수가 사용하는 `level`변수는 `nonlocal`키워드를 사용했기 때문에 `outer`에 새로 정의된 지역변수 `level`을 사용한다. 반복적으로 `f`함수를 실행하면 `inner`의 외부(outer)에 존재하는 `level`변수의 값을 증가시키고 `print`시키기 때문에, 값은 계속해서 증가한다.
+
+# 데코레이터 (decorator)
+
+함수를 받아 다른 함수를 반환하는 함수.<br>
+예를 들면, 기존에 존재하던 함수를 바꾸지 않고 전달된 인자를 보기위한 디버깅`print`함수를 추가한다던가 하는 기능을 할 수 있다.
+> 1.기능을 추가할 함수를 인자로 받음<br>
+  2.데코레이터 자체에 추가할 기능을 함수로 정의<br>
+  3.인자로 받은 함수를 데코레이터 내부에서 적절히 호출<br>
+  4.위 2가지를 행하는 내부 함수를 반환
+
+아래와 같이 함수 2개를 만들고, 새 구문을 추가해본다.<br>
+> 1.인자로 문자열 변수를 받아 출력해주는 함수 `print_string`구현<br>
+  2.인자로 정수형 변수를 받아 출력해주는 함수 `print_int`구현<br>
+  3.각 함수에 대해 자신이 전달받은 인자에 대한`type`을 출력하는 구문을 추가<br>
+
+여러함수에 대해 같은 기능을 추가할 경우, 데코레이터를 사용한다
+```python
+def print_debug(f):
+  def inner_function(*args, **kwargs):
+    print('args :', args)
+    print('kwargs :' kwargs)
+    result = f(*args, **kwargs)
+    return result
+  return inner_function
+```
+데코레이터함수(인자로 전달할 함수)형태로도 사용이 가능하지만, 데코레이터를 사용할 경우에는 함수 위에 데코레이터를 추가해서 사용가능하다.
+
+```python
+@print_debug
+def any_function():
+  pass
+```
+또한 데코레이터는 여러개를 가질 수 있으며, 함수에서 가장 가까운 것 부터 실행한다.
+> print_debug이후 결과를 제곱하고 print해주는 데코레이터를 실행, 반대로 실행
+
+# 제네레이터 (generator)
+제네레이터 함수는 파이썬의 시퀀스 데이터를 생성하는데 사용된다. 실제 시퀀스 데이터와 다른 점은, 시퀀스 전체를 가지고 있는 것이 아니라 시퀀스 데이커를 생성하기 위한 어떠한 루틴만을 가지고 있는 것이다.
+이 방식을 택했을 때의 장점은, 전체 크기만큼의 메모리를 가지고 있는 시퀀스 데이터와는 달리 메모리를 적게 사용할 수 있다. <br>
+제네레이터는 마지막으로 호출한 위치(항목)에 기억하고 있으며, 한 번 순회할 때 마다 그 다음 값을 반환한다.<br>
+제네레이터는 함수를 통해서 만들어지며, 함수 내부의 반복문에서 `yield`키워드를 사용하면 제네레이터가 된다.
+```python
+>>> def range_gen(num):
+...   i = 0
+...   while i < num:
+...     yield i
+...     i += 1
+...
+>>> gen = range_gen(10)
+>>> gen
+<generator object range_gen at 0x10b682168>
+>>> type(gen)
+<class 'generator'>
+>>> gen.__next__()
+0
+>>> gen.__next__()
+1
+>>> gen.__next__()
+2
+>>> gen.__next__()
+3
+>>> gen.__next__()
+4
+>>> gen.__next__()
+5
+>>> gen.__next__()
+6
+>>> gen.__next__()
+7
+>>> gen.__next__()
+8
+>>> gen.__next__()
+9
+>>> gen.__next__()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+StopIteration
+```
+
+함수 내부에 `yield`키워드가 사용되어 제네레이터 함수가 되었으며, 함수를 실행하면 제네레이터 객체를 반환한다.<br>
+`yield`부분에서 멈춘 제네레이터 객체를 순회하기 위해서는 `__next__()`함수를 실행해준다.
