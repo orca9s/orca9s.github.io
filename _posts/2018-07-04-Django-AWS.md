@@ -107,3 +107,50 @@ chsh ubuntu -s `which zsh`
 ```
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 ```
+위의 설정까지 완료 했다면 exit를 통해 서버에서 나간후 다시 ssh로 접속해야 적용이 완료된다.
+
+### pip설치 및 version다운
+아래의 코드를 사용해서 pip설치와 version을 다운받아야 한다.
+
+```
+sudo apt-get install python-pip
+sudo python -m pip install -U pip
+```
+
+### pipenv설치하기
+pyenv와 같은 다양한 버전으로 python을 실행해 볼 수 있도록 도와주는 프로그램이다. 그러나 pyenv와 다른점은 매번 requirements.txt를 갱신해줄 필요가 없이 pip file에 자동으로 저장된다. 패키지 설치도  pipenv install을 통해 간편하게 할 수 있다.
+
+```
+sudo -H pip install -U pipenv
+```
+
+### pyenv설치
+프로젝트 별로 각각 맞는 다양한 버전으로 python을 실행해 볼 수 있도록 도와주는 프로그램인 pyenv를 설치해야한다. 하지만 매번 개발환경을 적어놓는 requirements.txt를 갱신해주어야 하는 번거로움이 있다.
+
+```
+curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
+```
+
+설치를 완료하고 zshrc에 몇가지 코드를 추가 해주어야 한다.
+
+```
+vi .zshrc 를 이용해 편집 창으로 들어간다.
+```
+맨 아래줄에 아래의 코드를 추가해주면 된다.
+
+```
+export PATH="/home/ubuntu/.pyenv/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+```
+
+#### pyenv를 위한 requirements설치
+아래의 코드를 사용해서 requeirements를 설치해주자.
+
+```
+sudo apt-get install -y make build-essential libssl-dev zlib1g-dev libbz2-dev \
+libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev \
+xz-utils tk-dev libffi-dev
+```
+
+requirements설치가 끝났다면 exit으로 나간후 다시 ssh로 접속하자.
