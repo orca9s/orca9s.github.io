@@ -24,19 +24,30 @@ EC2는 클라우드에서 안전하고 크기 조정이 가능한 컴퓨팅 파�
 
 인스턴스 개수 1개가  프리티어 제한 인스턴스 개수가 늘어나면 비용이 추가 된다. 
 
+## AWS세팅하기
+아마존 웹 서비스를 사용하기 위해선 visa나 master카드가 필요하다 회원가입시 카드 등록을 하게되면 카드가 유효한지 검사를 하기 위해 1달러가 결제 된다. 회원가입 후 
+
+* EC2로 이동한다.
+* 국가 설정이 서울로 되어 있는지 확인후 
+* 인스턴스 시작
+* 본인 환경에 맞는 인스턴스 설정(ubuntu 16.04)64비트
+* 새로운 키 생성해서 키를 다운로드 해준다. (한번 다운받은 키는 재발급이 불가능하니 잘 보관하도록 한다.)
+
+이제 아래의 순서대로 적용하면 된다.
+
 
 ### 다운받은 키페어를 숨김 모드로 ssh로 이동시키기
-```
+```python
 mv ~/Downloads/fc-8th.pen ~/.ssh
 ```
 ### 만들어둔 인스턴스서버로 이동하기
 
-```
+```python	
 ssh -i ~/.ssh/key.pem ubuntu@퍼블릭 DNS(IPv4)
 ```
 
 ### 읽기모드 400으로 바꿔주기
-```
+```python
 chmod 400 ~/.ssh/fc-8th.pm
 ```
 
@@ -44,7 +55,7 @@ chmod 400 ~/.ssh/fc-8th.pm
 * 쓰기(w):파일의 쓰기권한
 * 실행(x):파일의 실행권한
 
-```
+```python
 -r--------@  1 jeonsangmin  staff   1.7K  7  3 14:54 fc-8th.pem
 ```
 
@@ -53,6 +64,20 @@ chmod 400 ~/.ssh/fc-8th.pm
 * 소유자: 소유자에 대한 퍼미션 지정
 * 그룹: 소유그룹에 대한 퍼미션 지정
 * 공개: 모든 사용자들에 대한 퍼미션 지정
+
+### locale설정해주기
+우선 locale을 설정해주어야 한다. 아래의 코드를 이용해서 locale을 설정해주자
+
+```python
+sudo vi/etc/default/locale
+```
+우선 편집창으로 들어가준다. 그후 아래의 코드를 추가하고 저장해주자!
+
+```python
+LANG=en_US.UTF-8
+LANGUAGE=en_US.UTF-8
+LC_ALL=en_US.UTF-8
+```
 
 ### 우분투 업데이트
 
@@ -154,3 +179,42 @@ xz-utils tk-dev libffi-dev
 ```
 
 requirements설치가 끝났다면 exit으로 나간후 다시 ssh로 접속하자.
+
+### pyenv로 필요한 파이썬 버전 설치하기 
+이제 pyenv를 이용해 필요한 파이썬 버전을 설치 해주어야 한다. 아래의 코드로 파이썬을 설치하자.
+
+```python
+pyenv install 3.6.5
+```
+## AWS와 django연결 하기
+이제 AWS서버의 기본적인 세팅을 해주었으니 django와 연결해주어야 한다. django의 app폴더안에 config폴더의 settings.py에 코드를 추가 해주어야 한다. ALLOWED HOST부분에 아래의 코드를 추가해주자
+
+```python
+'localhost',
+'127.0.0.1',
+'.amazonaws.com',
+```
+코드를 추가했다면 이제 aws서버쪽으로 파일들을 보내주어야 한다. app폴더 밖에서 아래의 코드를 입력하자.
+
+```python
+scp -i ~/.ssh/fc-8th.pem \
+-r ~/project/deploy/ec2-deploy \
+ubuntu@:/home/ubuntu/project
+```
+위 코드에서 @뒤부터 콜론(:)표시 앞부분에는 자신의 DNS서버 주소를 입력하면 된다.
+
+이제 다시 aws서버가 실행중인 터미널 창으로 돌아가서 서버안의 가상환경에 접속해준다 
+
+```python
+pipenv shell
+```
+
+서버안에 project폴더가 들어왔는지 확인하고 들어 왔다면 `pipenv install`을 통해 django의 환경과 같도록 만들어 준다.
+
+### EC2보안그룹 설정하기
+이제 aws홈페이지에서 자신이 실행중인 인스턴스를 선택하고 보안그룹을 추가 해주어야 한다. 보안그룹 - 인바운드 - 편집 - 규칙추가 - 유형(사용자 지정TC), 프로토콜(TCP), 포트범위(8000), 소스(위치무관) - 저장 설정을 마치고 aws서버가 실행중인 터미널에서 `./manage.py`가 있는 위치에서 아래의 코드를 실행하면 실행이 된다.
+
+```python
+./manage.py runserver 0:8000
+```
+이제 runserver를 시켰으니 인터넷 창에서 확인을 해야한다. 주소창에 자신의 DNS서버+8000을 입력하면 자신의 페이지로 이동하게된다. 특별한 설정이 없다면 Django프로젝트의 첫 화면이 나오면 성공이다.
