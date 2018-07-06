@@ -5,13 +5,10 @@ categories:
  - Docker
 tags:
 ---
-
 # Nginx - uWSGI - Django
 
 **Web Server** <-> **WSGI** <-> **Web Application**
-
 ## Nginx
-
 ### 웹 서버 설정
 
 ```
@@ -35,9 +32,7 @@ A, B, C, D, E 5개의 서버정보가 있다면, `sites-available`폴더에 들�
 ```
 /etc/nginx/sites-enableed/<링크파일>
 ```
-
 링크 명령어
-
 ```
 ln -s <소스> <타겟>
 ```
