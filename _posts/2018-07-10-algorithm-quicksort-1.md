@@ -1,5 +1,5 @@
 ---
-title: Algorithm
+title: Algorithm - quik_sort-1
 description: <center> Quick정렬을 대비한 재귀함수 </center>
 categories:
  - Algorithm

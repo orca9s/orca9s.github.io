@@ -1,5 +1,5 @@
 ---
-title: Algorithm
+title: Algorithm - selection_sort
 description: <center> Algorithm selection_sort </center>
 categories:
  - Algorithm

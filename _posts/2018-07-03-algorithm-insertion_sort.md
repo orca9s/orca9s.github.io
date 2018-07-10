@@ -1,5 +1,5 @@
 ---
-title: Algorithm
+title: Algorithm - insertion_sort
 description: <center> Algorithm insertion_sort </center>
 categories:
  - Algorithm

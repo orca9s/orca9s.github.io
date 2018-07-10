@@ -1,5 +1,5 @@
 ---
-title: Algorithm
+title: Algorithm - bubble_sort
 description: <center> Algorithm bubble_sort </center>
 categories:
  - Algorithm
