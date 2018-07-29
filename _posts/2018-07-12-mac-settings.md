@@ -1,3 +1,13 @@
+---
+title: Mac setting
+description: <center> Mac 초기 개발환경 설정 </center>
+categories:
+ - Mac
+tags:
+---
+
+
+
 맥 변경사항
 
 단축키 변경

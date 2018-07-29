@@ -8,7 +8,7 @@ tags:
 
 
 
-### 합병정렬
+### merge sort
 
 ```
 def merge_sort(list):
