@@ -1,5 +1,5 @@
 ---
-title: Docker
+title: Nginx와 Apache
 description: <center> Apache & Nginx </center>
 categories:
  - Nginx
